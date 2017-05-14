@@ -1,0 +1,9 @@
+
+1. Run POX controller first. Go to 'application', and run 'make app'
+
+2. Then run topology and auto test. Go to 'topology', and run 'make topo'
+
+3. Close POX controller with 'ctrl-c', so that report file can generate correctly.
+
+4. Results are saved in 'results'
+

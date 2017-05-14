@@ -1,0 +1,278 @@
+===Case 1. h1 ping h3===
+PING 10.0.0.50 (10.0.0.50) 56(84) bytes of data.
+
+--- 10.0.0.50 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
+
+
+===Case 2. h3 ping h1===
+PING 100.0.0.10 (100.0.0.10) 56(84) bytes of data.
+64 bytes from 100.0.0.10: icmp_seq=1 ttl=64 time=61.6 ms
+
+--- 100.0.0.10 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 61.670/61.670/61.670/0.000 ms
+
+
+===Case 3. h1 ping ds1===
+PING 100.0.0.20 (100.0.0.20) 56(84) bytes of data.
+From 100.0.0.10 icmp_seq=1 Destination Host Unreachable
+
+--- 100.0.0.20 ping statistics ---
+1 packets transmitted, 0 received, +1 errors, 100% packet loss, time 0ms
+
+
+
+===Case 4. h2 ping ws1===
+PING 100.0.0.40 (100.0.0.40) 56(84) bytes of data.
+From 100.0.0.11 icmp_seq=1 Destination Host Unreachable
+
+--- 100.0.0.40 ping statistics ---
+1 packets transmitted, 0 received, +1 errors, 100% packet loss, time 0ms
+
+
+
+===Case 5. h3 ping ds2===
+PING 100.0.0.21 (100.0.0.21) 56(84) bytes of data.
+
+--- 100.0.0.21 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
+
+
+===Case 6. h4 ping ws2===
+PING 100.0.0.41 (100.0.0.41) 56(84) bytes of data.
+
+--- 100.0.0.41 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
+
+
+===Case 7. h1 ping lb1===
+PING 100.0.0.25 (100.0.0.25) 56(84) bytes of data.
+64 bytes from 100.0.0.25: icmp_seq=1 ttl=255 time=79.5 ms
+
+--- 100.0.0.25 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 79.512/79.512/79.512/0.000 ms
+
+
+===Case 8. h3 ping lb1===
+PING 100.0.0.25 (100.0.0.25) 56(84) bytes of data.
+64 bytes from 100.0.0.25: icmp_seq=1 ttl=255 time=27.4 ms
+
+--- 100.0.0.25 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 27.482/27.482/27.482/0.000 ms
+
+
+===Case 9. h1 ping lb2===
+PING 100.0.0.45 (100.0.0.45) 56(84) bytes of data.
+64 bytes from 100.0.0.45: icmp_seq=1 ttl=255 time=26.9 ms
+
+--- 100.0.0.45 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 26.947/26.947/26.947/0.000 ms
+
+
+===Case 10. h3 ping lb2===
+PING 100.0.0.45 (100.0.0.45) 56(84) bytes of data.
+64 bytes from 100.0.0.45: icmp_seq=1 ttl=255 time=28.7 ms
+
+--- 100.0.0.45 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 28.746/28.746/28.746/0.000 ms
+
+
+===Case 11. h3 curl ws1===
+curl: (28) Connection timed out after 2002 milliseconds
+
+
+===Case 12. h1 curl ws1===
+curl: (28) Connection timed out after 2002 milliseconds
+
+
+===Case 13. h3 dig ds1===
+
+; <<>> DiG 9.9.5-3ubuntu0.2-Ubuntu <<>> +time=2 @100.0.0.20 server1.com
+; (1 server found)
+;; global options: +cmd
+;; connection timed out; no servers could be reached
+
+
+===Case 14. h1 dig ds1===
+
+; <<>> DiG 9.9.5-3ubuntu0.2-Ubuntu <<>> +time=2 @100.0.0.20 server1.com
+; (1 server found)
+;; global options: +cmd
+;; connection timed out; no servers could be reached
+
+
+===Case 15. h3 dig lb1===
+;; Warning: query response not set
+
+; <<>> DiG 9.9.5-3ubuntu0.2-Ubuntu <<>> @100.0.0.25 server1.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 33006
+;; flags:; QUERY: 0, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+;; WARNING: Message has 27 extra bytes at end
+
+;; ANSWER SECTION:
+server1.com.		0	IN	A	100.0.0.40
+
+;; Query time: 41 msec
+;; SERVER: 100.0.0.25#53(100.0.0.25)
+;; WHEN: Sun May 14 04:59:00 CEST 2017
+;; MSG SIZE  rcvd: 66
+
+
+
+===Case 16. h4 dig lb1===
+;; Warning: query response not set
+
+; <<>> DiG 9.9.5-3ubuntu0.2-Ubuntu <<>> @100.0.0.25 server2.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 17027
+;; flags:; QUERY: 0, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+;; WARNING: Message has 27 extra bytes at end
+
+;; ANSWER SECTION:
+server2.com.		0	IN	A	100.0.0.41
+
+;; Query time: 45 msec
+;; SERVER: 100.0.0.25#53(100.0.0.25)
+;; WHEN: Sun May 14 04:59:00 CEST 2017
+;; MSG SIZE  rcvd: 66
+
+
+
+===Case 17. h1 dig lb1===
+;; Warning: query response not set
+
+; <<>> DiG 9.9.5-3ubuntu0.2-Ubuntu <<>> @100.0.0.25 server3.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 45106
+;; flags:; QUERY: 0, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+;; WARNING: Message has 27 extra bytes at end
+
+;; ANSWER SECTION:
+server3.com.		0	IN	A	100.0.0.42
+
+;; Query time: 39 msec
+;; SERVER: 100.0.0.25#53(100.0.0.25)
+;; WHEN: Sun May 14 04:59:00 CEST 2017
+;; MSG SIZE  rcvd: 66
+
+
+
+===Case 18. h2 dig lb1===
+;; Warning: query response not set
+
+; <<>> DiG 9.9.5-3ubuntu0.2-Ubuntu <<>> @100.0.0.25 server1.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 17933
+;; flags:; QUERY: 0, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+;; WARNING: Message has 27 extra bytes at end
+
+;; ANSWER SECTION:
+server1.com.		0	IN	A	100.0.0.40
+
+;; Query time: 43 msec
+;; SERVER: 100.0.0.25#53(100.0.0.25)
+;; WHEN: Sun May 14 04:59:00 CEST 2017
+;; MSG SIZE  rcvd: 66
+
+
+
+===Case 19. h1 POST test===
+<head>
+<title>Error response</title>
+</head>
+<body>
+<h1>Error response</h1>
+<p>Error code 501.
+<p>Message: Unsupported method ('POST').
+<p>Error code explanation: 501 = Server does not support this operation.
+</body>
+
+
+===Case 20. h2 PUT test===
+<head>
+<title>Error response</title>
+</head>
+<body>
+<h1>Error response</h1>
+<p>Error code 501.
+<p>Message: Unsupported method ('PUT').
+<p>Error code explanation: 501 = Server does not support this operation.
+</body>
+
+
+===Case 21. h3 GET test===
+curl: (28) Operation timed out after 2001 milliseconds with 0 bytes received
+
+
+===Case 22. h4 HEAD test===
+curl: (28) Resolving timed out after 2518 milliseconds
+curl: (28) Operation timed out after 2001 milliseconds with 0 bytes received
+
+
+===Case 23. h1 OPTION test===
+curl: (28) Resolving timed out after 2518 milliseconds
+curl: (28) Operation timed out after 2002 milliseconds with 0 bytes received
+
+
+===Case 24. h2 TRACE test===
+* Rebuilt URL to: 100.0.0.45/
+* Hostname was NOT found in DNS cache
+*   Trying 100.0.0.45...
+* Connected to 100.0.0.45 (100.0.0.45) port 80 (#0)
+> TRACE / HTTP/1.1
+> User-Agent: curl/7.35.0
+> Host: 100.0.0.45
+> Accept: */*
+> 
+* Operation timed out after 2002 milliseconds with 0 bytes received
+* Closing connection 0
+curl: (28) Operation timed out after 2002 milliseconds with 0 bytes received
+
+
+===Case 25. h3 DELETE test===
+curl: (28) Resolving timed out after 2518 milliseconds
+curl: (28) Operation timed out after 2001 milliseconds with 0 bytes received
+
+
+===Case 26. h4 CONNECT test===
+curl: (28) Resolving timed out after 2519 milliseconds
+curl: (28) Operation timed out after 2001 milliseconds with 0 bytes received
+
+
+===Case 27. h1 /etc/passwd test===
+curl: (28) Operation timed out after 2002 milliseconds with 0 bytes received
+
+
+===Case 28. h2 /var/log/ test===
+curl: (28) Operation timed out after 2000 milliseconds with 0 bytes received
+
+
+===Case 29. h3 INSERT test===
+curl: (28) Operation timed out after 2002 milliseconds with 0 bytes received
+
+
+===Case 30. h4 UPDATE test===
+curl: (28) Operation timed out after 2001 milliseconds with 0 bytes received
+
+
+===Case 31. h1 DELETE test===
+curl: (28) Operation timed out after 2002 milliseconds with 0 bytes received
+
+
